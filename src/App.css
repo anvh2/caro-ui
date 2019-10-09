@@ -1,0 +1,151 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+body {
+  font: 14px "Century Gothic", Futura, sans-serif;
+  margin: 20px;
+}
+
+ol, ul {
+  padding-left: 30px;
+}
+
+.button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  width: 120px;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
+}
+
+.btn-bold {
+  background-color: rgb(6, 75, 9);
+  font-weight: bold;
+}
+
+.button-margin-left {
+  margin-left: 10px;
+}
+
+.board-row:after {
+  clear: both;
+  content: "";
+  display: table;
+}
+
+.status {
+  margin-bottom: 10px;
+}
+
+.square {
+  background: #fff;
+  border: 1px solid #999;
+  float: left;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 34px;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+  width: 34px;
+}
+
+.square:focus {
+  outline: none;
+}
+
+.kbd-navigation .square:focus {
+  background: #ddd;
+}
+
+.game {
+  display: flex;
+  flex-direction: row;
+}
+
+.game-info {
+  margin-left: 20px;
+}
+
+.game-config {
+  display: block;
+  margin-bottom: 20px;
+}
+.fixed-size {
+  width: 100px;
+  display: inline-block;
+}
+.btn-bold {
+  font-weight: bold;
+}
+
+.square-highlight {
+  color: red;
+  background-color: rgb(81, 81, 226);
+  font-weight: bold;
+}
+
+.footer {
+  position: fixed;
+  display: block;
+  width: 100%;
+  background: rgb(197, 197, 197);
+  text-align: center;
+  bottom: 0;
+}
+
+.btn-group button {
+  background-color: #4CAF50; 
+  border: 1px solid green;
+  color: white;
+  padding: 10px 24px;
+  cursor: pointer; 
+  width: 100%; 
+  display: block; 
+}
+
+.btn-group button:not(:last-child) {
+  border-bottom: none; 
+}
+
+.btn-group button:hover {
+  background-color: #3e8e41;
+}
