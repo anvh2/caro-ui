@@ -1,12 +1,51 @@
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
+import cookie from 'react-cookies';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Board from '../components/Board';
-import * as action from '../actions';
-import '../App.css';
+import Board from '../../components/game/Board';
+import { Button } from 'react-bootstrap';
+import * as action from '../../actions';
+import '../../App.css';
 
+var dName = '';
 class Game extends Component {
+  fetchUser = () => {
+    const token = cookie.load('token');
+    if (token === undefined) {
+      return false;
+    }
+
+    fetch('http://localhost:55210/me', {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + token
+      }
+    })
+      .then(res => res.json())
+      .then(res => {
+        if (res.code === 1 && res.auth === true) {
+          dName = res.data.display_name;
+        }
+      })
+      .catch(err => {
+        console.log('ERR', err);
+      });
+
+    return true;
+  };
+
   render() {
+    var { isAuthen } = this.props;
+    console.log(isAuthen);
+    if (!isAuthen) {
+      isAuthen = this.fetchUser();
+    }
+    if (!isAuthen) {
+      return <Redirect to="/login" />;
+    }
+
     const {
       history,
       step,
@@ -17,7 +56,8 @@ class Game extends Component {
       handleClick,
       reset,
       reverse,
-      undoTo
+      undoTo,
+      logout
     } = this.props;
     const current = history[step];
     let classes;
@@ -73,6 +113,19 @@ class Game extends Component {
             </div>
             <div className="btn-group">{moves}</div>
           </div>
+          <div>
+            {dName === '' ? 'No Name' : dName}
+            <Button
+              variant="primary"
+              type="button"
+              onClick={() => {
+                cookie.remove('token');
+                logout();
+              }}
+            >
+              Logout
+            </Button>
+          </div>
         </div>
       </div>
     );
@@ -86,7 +139,8 @@ const mapStateToProps = state => {
     isX: state.isX,
     isWin: state.isWin,
     winCells: state.winCells,
-    isReverse: state.isReverse
+    isReverse: state.isReverse,
+    isAuthen: state.isAuthen
   };
 };
 
@@ -95,7 +149,8 @@ const mapDispathToProps = dispatch => {
     handleClick: (i, j) => dispatch(action.handleClick(i, j)),
     reset: () => dispatch(action.reset()),
     reverse: () => dispatch(action.reverse()),
-    undoTo: step => dispatch(action.undoTo(step))
+    undoTo: step => dispatch(action.undoTo(step)),
+    logout: () => dispatch(action.logout())
   };
 };
 

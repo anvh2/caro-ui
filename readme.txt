@@ -1,2 +1,2 @@
-link app: https://easy-caro.herokuapp.com/
+link app: https://easycaro-rejs.herokuapp.com/
 link github: https://github.com/anvh2/Caro.git

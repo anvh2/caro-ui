@@ -13,7 +13,8 @@ const initState = {
   isX: true,
   isWin: false,
   winCells: null,
-  isReverse: false
+  isReverse: false,
+  isAuthen: false,
 };
 
 const emptyBoard = () => {
@@ -55,6 +56,16 @@ const boardReducer = (state = initState, action) => {
       return move(state, action.payload);
     case 'UNDO_TO':
       return api.undoTo(state, action.step);
+    case 'LOGIN':
+      return {
+        ...state,
+        isAuthen: true,
+      };
+    case 'LOGOUT':
+      return {
+        ...state,
+        isAuthen: false
+      };
     default:
       return state;
   }
