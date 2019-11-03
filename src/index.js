@@ -1,12 +1,14 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import { render } from 'react-dom';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
 import App from './containers/App';
-import rootReducer from './reducers';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { gameOnlineReducer } from './reducers/game/online_game';
+// import { combined } from './reducers';
 
-const store = createStore(rootReducer);
+const store = createStore(gameOnlineReducer, applyMiddleware(thunk));
 
 render(
   <Provider store={store}>

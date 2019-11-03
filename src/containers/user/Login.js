@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import cookie from 'react-cookies';
-import * as action from '../../actions';
 import { connect } from 'react-redux';
 import { Form, Button } from 'react-bootstrap';
+import * as action from '../../actions/user/login';
 
-var username = '';
-var password = '';
+let username = '';
+let password = '';
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -27,42 +26,21 @@ class Login extends Component {
     }
   };
 
-  onSubmit = loginFunc => e => {
+  onSubmit = login => e => {
     e.preventDefault();
-    fetch('http://localhost:55210/user/login', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        username: username,
-        password: password
-      })
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.token !== undefined) {
-          cookie.save('token', data.token);
-          loginFunc();
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    login(username, password);
   };
 
-  renderRedirect(isAuthen) {
-    if (isAuthen) {
+  render() {
+    const { status, login } = this.props;
+    if (status === 'waiting') {
+      return <div>waiting</div>;
+    }
+    if (status === 'succeeded') {
       return <Redirect to="/" />;
     }
-  }
-
-  render() {
-    const { isAuthen, login } = this.props;
     return (
       <div>
-        {this.renderRedirect(isAuthen)}
         <Form id="login" method="POST" onSubmit={this.onSubmit(login)}>
           <Form.Group>
             <Form.Label>Username</Form.Label>
@@ -85,6 +63,16 @@ class Login extends Component {
           <Button variant="primary" type="submit">
             Login
           </Button>
+          <Button
+            variant="primary"
+            type="button"
+            onClick={() => {
+              // TODO: redirect to register page
+              this.props.history.push('/register');
+            }}
+          >
+            Register
+          </Button>
         </Form>
       </div>
     );
@@ -93,13 +81,14 @@ class Login extends Component {
 
 const mapStateToProps = state => {
   return {
-    isAuthen: state.isAuthen
+    status: state.status,
+    data: state.data
   };
 };
 
 const mapDispathToProps = dispatch => {
   return {
-    login: () => dispatch(action.login())
+    login: (username, password) => dispatch(action.login(username, password))
   };
 };
 

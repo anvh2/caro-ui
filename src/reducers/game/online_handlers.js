@@ -1,17 +1,9 @@
-/* eslint-disable consistent-return */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-console */
 /* eslint-disable no-continue */
-export const undoTo = (state, stepNumber) => {
-  const { isWin } = state;
-  if (isWin) {
-    return;
-  }
-
-  return {
-    ...state,
-    step: stepNumber,
-    isX: stepNumber % 2 === 0
-  };
-};
+/* eslint-disable import/prefer-default-export */
+/* eslint-disable no-undef */
+/* eslint-disable consistent-return */
 
 const checkWinner = (squares, i, j) => {
   const currentCell = squares[i][j];
@@ -182,8 +174,16 @@ const checkWinner = (squares, i, j) => {
   return null;
 };
 
-export const handleClick = (state, i, j) => {
+// TODO: we should have both my board and enemy board
+
+// set caro into the board
+export const setCaro = (state, i, j) => {
   let { history, step, isWin, isX, winCells } = state;
+  const { isYourTurn } = state;
+  if (!isYourTurn || isWin) {
+    return state;
+  }
+
   if (!history[step].squares[i][j] && isWin) {
     return;
   }
@@ -223,31 +223,70 @@ export const handleClick = (state, i, j) => {
     step,
     isX,
     isWin,
-    winCells
+    winCells,
+    isYourTurn: !isYourTurn
   };
 };
 
-export const reset = state => {
-  let { history, step, isWin, winCells, isX } = state;
-  history = [
-    {
-      squares: Array(20)
-        .fill(null)
-        .map(() => Array(20).fill(null))
+export const handleClick = (state, conn, i, j) => {
+  let { history, step, isWin, isX, winCells } = state;
+  const { isYourTurn } = state;
+  if (!isYourTurn || isWin) {
+    return state;
+  }
+
+  if (!history[step].squares[i][j] && isWin) {
+    return;
+  }
+
+  const newHistory = history.slice(0, step + 1);
+  const current = newHistory[newHistory.length - 1];
+  const squares = current.squares.slice();
+
+  squares.map((row, idx) => {
+    squares[idx] = [...current.squares[idx]];
+    return true;
+  });
+
+  if (!squares[i][j] && !isWin) {
+    squares[i][j] = isX ? 'X' : 'O';
+    winCells = checkWinner(squares, i, j);
+    if (winCells !== null) {
+      isWin = true;
     }
-  ];
-  step = 0;
-  isWin = false;
-  winCells = null;
-  isX = true;
+    history = newHistory.concat([
+      {
+        squares,
+        coordinate: {
+          x: i,
+          y: j
+        }
+      }
+    ]);
+
+    step = newHistory.length;
+    isX = !isX;
+
+    // send to enemy
+    conn.socket.emit(`${conn.room}`, {
+      event: 'COORDINATE',
+      data: {
+        x: i,
+        y: j
+      }
+    });
+    console.log(conn);
+  }
 
   return {
     ...state,
     history,
     step,
+    isX,
     isWin,
     winCells,
-    isX,
-    isReverse: false
+    isYourTurn: !isYourTurn
   };
 };
+
+export const undo = () => {};

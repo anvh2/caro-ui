@@ -11,8 +11,8 @@ export const reset = () => {
   };
 };
 
-export const undoTo = step => ({
-  type: 'UNDO_TO',
+export const undo = step => ({
+  type: 'UNDO',
   step
 });
 
@@ -20,6 +20,10 @@ export const handleClick = (i, j) => ({
   type: 'HANDLE_CLICK',
   i,
   j
+});
+
+export const turnBot = () => ({
+  type: 'TURN_BOT'
 });
 
 export const login = () => ({

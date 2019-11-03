@@ -33,16 +33,17 @@
 }
 
 body {
-  font: 14px "Century Gothic", Futura, sans-serif;
+  font: 14px 'Century Gothic', Futura, sans-serif;
   margin: 20px;
 }
 
-ol, ul {
+ol,
+ul {
   padding-left: 30px;
 }
 
 .button {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   border: none;
   color: white;
   width: 120px;
@@ -65,7 +66,7 @@ ol, ul {
 
 .board-row:after {
   clear: both;
-  content: "";
+  content: '';
   display: table;
 }
 
@@ -79,13 +80,13 @@ ol, ul {
   float: left;
   font-size: 24px;
   font-weight: bold;
-  line-height: 34px;
-  height: 34px;
+  line-height: 32.5px;
+  height: 32.5px;
   margin-right: -1px;
   margin-top: -1px;
   padding: 0;
   text-align: center;
-  width: 34px;
+  width: 32.5px;
 }
 
 .square:focus {
@@ -96,13 +97,38 @@ ol, ul {
   background: #ddd;
 }
 
+.containerx {
+  margin: auto;
+  width: 80%;
+  padding: 10px;
+  background-color: white;
+  border: 1px solid black;
+}
+
 .game {
   display: flex;
   flex-direction: row;
 }
 
+.col-centered {
+  float: none;
+  margin: 0 auto;
+}
+
+.game-board {
+  margin: auto;
+  width: 100%;
+  padding: 10px;
+  background-color: white;
+  border: 1px solid black;
+}
+
 .game-info {
+  margin: auto;
+  width: 100px;
+  height: 100%;
   margin-left: 20px;
+  background-color: white;
 }
 
 .game-config {
@@ -132,18 +158,26 @@ ol, ul {
   bottom: 0;
 }
 
+.history {
+  width: 100%;
+  height: 300px;
+  left: 0;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
 .btn-group button {
-  background-color: #4CAF50; 
+  background-color: #4caf50;
   border: 1px solid green;
   color: white;
   padding: 10px 24px;
-  cursor: pointer; 
-  width: 100%; 
-  display: block; 
+  cursor: pointer;
+  width: 100%;
+  display: block;
 }
 
 .btn-group button:not(:last-child) {
-  border-bottom: none; 
+  border-bottom: none;
 }
 
 .btn-group button:hover {

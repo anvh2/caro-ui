@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Messenger</title>
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<style type="text/css">
+		.container {
+			width: 100%;
+			height: 100%;
+			margin: 0;
+			padding: 0;
+			font-family: sans-serif;
+			letter-spacing: 0.5px;
+		}
+
+		.message-header {
+			border: 1px solid #ccc;
+			width: 100%;
+			height: 10%;
+			border-bottom: none;
+			display: inline-block;
+			background-color: #007bff;
+		}
+
+		.active {
+			width: 100%;
+			float: left;
+			margin-top: 10px;
+		}
+
+		.active p {
+			width: 100%;
+			font-size: 20px;
+			margin-left: 20px;
+			color: #fff;
+		}
+
+		.chat-frame {
+			height: 80%;
+			padding: 0 0 5px 0;
+		}
+
+		.msg-inbox {
+			border: 1px solid #ccc;
+			overflow: hidden;
+			padding-bottom: 30px;
+		}
+
+		.chats {
+			padding: 30px 15px 0 25px;
+		}
+
+		.msg-frame {
+			height: 500px;
+			overflow-y: scroll;
+		}
+
+		/*hide scroll bar*/
+		.msg-frame::-webkit-scrollbar{
+			display: none;
+		}
+
+		.received-chats {
+			width: 100%;
+			clear: both;
+		}
+
+		.received-msg {
+			float: left;
+			max-width: 70%;
+			margin-bottom: 5px;
+		}
+
+		.received-msg p {
+			background: #efefef none repeat scroll 0 0;
+			border-radius: 10px;
+			color: #646464;
+			margin: 0;
+			padding: 5px 10px 5px 12px;
+			width: auto;
+		}
+
+		.sent-chats {
+			width: 100%;
+			clear: both;
+		}
+
+		.sent-msg {
+			float: right;
+			max-width: 70%;
+			margin-bottom: 5px;
+		}
+
+		.sent-msg p {
+			background: #007bff none repeat scroll 0 0;
+			color: #fff;
+			border-radius: 10px;
+			margin: 0;
+			padding: 5px 10px 5px 12px;
+			width: auto;
+		}
+		.write-msg {
+			height: 10%;
+		}
+	</style>
+</head>
+<body
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-2">
+				
+			</div>
+			<div class="col-sm-7">
+					<div class="container">
+						<div class="message-header">
+							<div class="active">
+								<p>Sherlock Home</p>
+							</div>
+						</div>
+						<div class="chat-frame">
+							<div class="msg-inbox">
+								<div class="chats">
+									<div class="msg-frame">
+										<div class="received-chats">
+											<div class="received-msg">
+												<p>Hi, my name is Home. I'm a student of University of Science</p>
+											</div>
+										</div>
+
+										<div class="sent-chats">
+											<div class="sent-msg">
+												<p>Hello</p>
+											</div>
+										</div>
+
+										<div class="sent-chats">
+											<div class="sent-msg">
+												<p>My name is An. I'm student in US too. What is your major?</p>
+											</div>
+										</div>
+
+										<div class="received-chats">
+											<div class="received-msg">
+												<p>My major is Infomation Technology, about you?</p>
+											</div>
+										</div>
+
+										<div class="sent-chats">
+											<div class="sent-msg">
+												<p>Oh shit, me too.</p>
+											</div>
+										</div>
+
+										<div class="sent-chats">
+											<div class="sent-msg">
+												<p>Awesome, where are you now? Can I met you?</p>
+											</div>
+										</div>
+										
+										<div class="received-chats">
+											
+											<div class="received-msg">
+												<p>Right, I'm in canteen.</p>
+											</div>
+										</div>
+
+										<div class="sent-chats">
+											<div class="sent-msg">
+												<p>Ok, I be there!</p>
+											</div>
+										</div>
+
+										<div class="sent-chats">
+											<div class="sent-msg">
+												<p>Awesome, where are you now? Can I met you?</p>
+											</div>
+										</div>
+										
+										<div class="received-chats">
+											
+											<div class="received-msg">
+												<p>Right, I'm in canteen.</p>
+											</div>
+										</div>
+
+										<div class="sent-chats">
+											<div class="sent-msg">
+												<p>Ok, I be there!</p>
+											</div>
+										</div>
+										<div class="sent-chats">
+											<div class="sent-msg">
+												<p>Awesome, where are you now? Can I met you?</p>
+											</div>
+										</div>
+										
+										<div class="received-chats">
+											
+											<div class="received-msg">
+												<p>Right, I'm in canteen.</p>
+											</div>
+										</div>
+
+										<div class="sent-chats">
+											<div class="sent-msg">
+												<p>Ok, I be there!</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+					</div>
+					<div class="write-msg">
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="write message..." name="">
+							<div class="input-group-append">
+								<span class="input-group-text">
+									<i class="fa fa-paper-plane"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<div class="container-friend">
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
+</body>
+
+<script type="text/javascript">
+	class Message {
+		constructor(sender, receiver, content) {
+            this.sender = sender;
+            this.receiver = receiver;
+            this.content = content;
+        }
+	}
+
+	//get parameter from url
+    const getUrlVars = () => {
+        var vars = {};
+        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+            vars[key] = value;
+        });
+        return vars;
+    };
+
+    //get username
+    const username = getUrlVars()["username"];
+    //create websocket
+    const websocket = new WebSocket("ws://localhost:8080/websocket/messenger/" + username);
+
+    websocket.onopen = function() {
+
+    };
+    websocket.onmessage = function(message) {
+        
+    };
+    websocket.onclose = function() {
+       
+    };
+    websocket.onerror = function(message) {
+        
+    };
+
+
+</script>
+	
+</script>
+</html>
