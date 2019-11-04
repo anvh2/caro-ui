@@ -11,19 +11,31 @@ import { connect } from 'react-redux';
 import Board from '../../components/board/Board';
 import Chat from '../../components/Chat';
 import * as action from '../../actions/game/game_online';
+import connectServer, {
+  pairing,
+  listeningData,
+  listeningMsg
+} from '../../plugins/socket';
 import '../../App.css';
-import connectServer, { pairing, listening } from '../../plugins/socket';
 
 let conn;
+let isListening = false;
 
 class GameOnline extends Component {
-  constructor() {
-    super();
+  findMatch = (setTurn, setPaired) => {
+    conn = connectServer();
+    // pairing
+    pairing(conn, data => {
+      console.log('data', data);
+      conn.room = data.room;
+      conn.status = 'paired';
 
-    this.state = {
-      isPair: false
-    };
-  }
+      // set turn for player
+      setTurn(data.isYourTurn);
+    });
+    // TODO: this will set without pair
+    setPaired(true);
+  };
 
   render() {
     const {
@@ -34,8 +46,11 @@ class GameOnline extends Component {
       winCells,
       isX,
       isYourTurn,
+      isPaired,
       handleClick,
-      setCaro
+      setCaro,
+      setTurn,
+      setPaired
     } = this.props;
     const current = history[step];
 
@@ -51,13 +66,24 @@ class GameOnline extends Component {
       moves = moves.reverse();
     }
 
+    console.log(isYourTurn, isPaired);
+
     // after click, this will re-render and will listen
-    if (this.state.isPair) {
-      listening(conn, data => {
+    // ensure listening is singleton
+    if (isPaired && !isYourTurn && !isListening) {
+      isListening = true;
+
+      // listening incoming data
+      listeningData(conn, data => {
         // parse json to object
         const obj = JSON.parse(data);
         console.log(obj);
         setCaro(obj.x, obj.y);
+      });
+
+      // listening incoming message
+      listeningMsg(conn, msg => {
+        console.log(msg);
       });
     }
 
@@ -76,52 +102,50 @@ class GameOnline extends Component {
             </div>
           </Col>
           <Col sm={4}>
-            <Row>
-              <Col sm={8}>
-                <div className="status">
-                  {isWin ? 'Winner is: ' : 'Next player: '}
-                  {isX ? 'X' : 'O'}
-                </div>
-              </Col>
-              <Col sm={4}>Avatar</Col>
-            </Row>
-            <Row>
-              <Col sm={4}>
-                <Button
-                  variant="primary"
-                  type="button"
-                  onClick={() => {
-                    conn = connectServer();
-                    // pairing
-                    pairing(conn);
-                    // TODO: this will set without pair
-                    this.setState({
-                      isPair: true
-                    });
-                  }}
-                >
-                  Find
-                </Button>
-              </Col>
-              <Col sm={4}>
-                <Button>Surrender</Button>
-              </Col>
-              <Col sm={4}>
-                <Button>Undo</Button>
-              </Col>
-            </Row>
-            <Row>
-              <Col sm={12}>
-                <div>
-                  <Chat />
-                </div>
-              </Col>
-            </Row>
-            <Row>
-              <div className="history">
-                <ListGroup>{moves}</ListGroup>
-              </div>
-            </Row>
+            <div className="game-info">
+              <Row>
+                <Col sm={8}>
+                  <div className="status">
+                    {isWin ? 'Winner is: ' : 'Next player: '}
+                    {isX ? 'X' : 'O'}
+                  </div>
+                </Col>
+                <Col sm={4}>Avatar</Col>
+              </Row>
+              <Row>
+                <Col sm={4}>
+                  <Button
+                    variant="primary"
+                    type="button"
+                    onClick={() => {
+                      this.findMatch(setTurn, setPaired);
+                    }}
+                  >
+                    Find
+                  </Button>
+                </Col>
+                <Col sm={4}>
+                  <Button>Surrender</Button>
+                </Col>
+                <Col sm={4}>
+                  <Button>Undo</Button>
+                </Col>
+              </Row>
+              <Row>
+                <Col sm={12}>
+                  <div>
+                    <Chat />
+                  </div>
+                </Col>
+              </Row>
+              <Row>
+                <Col sm={12}>
+                  <div className="history">
+                    <ListGroup>{moves}</ListGroup>
+                  </div>
+                </Col>
+              </Row>
+            </div>
           </Col>
         </Row>
       </Container>
@@ -138,7 +162,8 @@ const mapStateToProps = state => {
     winCells: state.winCells,
     isReverse: state.isReverse,
     isAuthen: state.isAuthen,
-    isYourTurn: state.isYourTurn
+    isYourTurn: state.isYourTurn,
+    isPaired: state.isPaired
   };
 };
 
@@ -146,6 +171,8 @@ const mapDispathToProps = dispatch => {
   return {
     handleClick: (conn, i, j) => dispatch(action.handleClick(conn, i, j)),
     setCaro: (i, j) => dispatch(action.setCaro(i, j)),
+    setTurn: isTurn => dispatch(action.setTurn(isTurn)),
+    setPaired: isPaired => dispatch(action.setPaired(isPaired)),
     reset: () => dispatch(action.reset()),
     reverse: () => dispatch(action.reverse()),
     undo: step => dispatch(action.undo(step))

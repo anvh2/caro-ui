@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prefer-stateless-function */
 /* eslint-disable no-console */
 import React, { Component } from 'react';

@@ -125,9 +125,9 @@ ul {
 
 .game-info {
   margin: auto;
-  width: 100px;
+  width: 100%;
   height: 100%;
-  margin-left: 20px;
+  border: 1px solid black;
   background-color: white;
 }
 
@@ -160,10 +160,13 @@ ul {
 
 .history {
   width: 100%;
-  height: 300px;
-  left: 0;
+  height: 285px;
+  margin: 0;
+  padding: 5px;
+  font-family: sans-serif;
+  border: 1px solid #ccc;
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .btn-group button {
@@ -182,4 +185,9 @@ ul {
 
 .btn-group button:hover {
   background-color: #3e8e41;
+}
+
+.chat {
+  height: 50px;
+  width: 50px;
 }

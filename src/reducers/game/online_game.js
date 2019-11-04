@@ -14,7 +14,8 @@ export const initGameOnlineState = {
   isWin: false,
   winCells: null,
   isX: true,
-  isYourTurn: true
+  isYourTurn: true,
+  isPaired: false
 };
 
 export const gameOnlineReducer = (state = initGameOnlineState, action) => {
@@ -23,6 +24,10 @@ export const gameOnlineReducer = (state = initGameOnlineState, action) => {
       return handlers.handleClick(state, action.conn, action.i, action.j);
     case 'SET_CARO':
       return handlers.setCaro(state, action.i, action.j);
+    case 'SET_TURN':
+      return handlers.setTurn(state, action.isTurn);
+    case 'SET_PAIRED':
+      return handlers.setPaired(state, action.isPaired);
     case 'UNDO':
       return handlers.undo(state, action.step);
     default:

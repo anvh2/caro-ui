@@ -7,7 +7,7 @@ let socket = null;
 
 const connectServer = () => {
   socket = io.connect('http://localhost:55210');
-  socket.emit('matching', { username: 'anvh2' }, res => {
+  socket.emit('MATCHING', { username: 'anvh2' }, res => {
     if (res.code === 1) {
       console.log('res ok');
     } else {
@@ -32,6 +32,7 @@ const connectServer = () => {
   // conn.room = '';
   // conn.status = 'waiting';
   // console.log('connection', conn);
+
   return {
     socket,
     room: '',
@@ -39,18 +40,30 @@ const connectServer = () => {
   };
 };
 
-export const pairing = conn => {
-  conn.socket.on('paired', data => {
-    console.log('room', data.room);
-    conn.room = data.room;
-    conn.status = 'paired';
+export const pairing = (conn, callback) => {
+  conn.socket.on('PAIRING', res => {
+    callback(res);
   });
 };
 
-export const listening = (conn, callback) => {
-  conn.socket.on('COORDINATE', res => {
+export const listeningData = (conn, callback) => {
+  conn.socket.on('DATA', res => {
     callback(res);
   });
+};
+
+export const listeningMsg = (conn, callback) => {
+  conn.socket.on('MESSAGE', res => {
+    callback(res);
+  });
+};
+
+export const sendData = (conn, data) => {
+  conn.socket.emit(`${conn.room}`, { event: 'DATA', data });
+};
+
+export const sendMsg = (conn, data) => {
+  conn.socket.emit(`${conn.room}`, { event: 'MESSAGE', data });
 };
 
 export default connectServer;

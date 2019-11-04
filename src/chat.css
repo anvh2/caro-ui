@@ -1,8 +1,8 @@
 .container {
   width: 100%;
-  height: 100%;
+  height: 300px;
   margin: 0;
-  padding: 0;
+  padding: 5px;
   font-family: sans-serif;
   letter-spacing: 0.5px;
 }
@@ -45,7 +45,7 @@
 }
 
 .msg-frame {
-  height: 500px;
+  height: 200px;
   overflow-y: scroll;
 }
 

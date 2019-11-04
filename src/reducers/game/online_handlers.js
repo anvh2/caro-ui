@@ -4,6 +4,7 @@
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable no-undef */
 /* eslint-disable consistent-return */
+import { sendData } from '../../plugins/socket';
 
 const checkWinner = (squares, i, j) => {
   const currentCell = squares[i][j];
@@ -174,57 +175,42 @@ const checkWinner = (squares, i, j) => {
   return null;
 };
 
-// TODO: we should have both my board and enemy board
-
 // set caro into the board
 export const setCaro = (state, i, j) => {
-  let { history, step, isWin, isX, winCells } = state;
-  const { isYourTurn } = state;
-  if (!isYourTurn || isWin) {
-    return state;
-  }
-
-  if (!history[step].squares[i][j] && isWin) {
-    return;
-  }
-
+  let { history, isWin, winCells } = state;
+  const { step, isX } = state;
   const newHistory = history.slice(0, step + 1);
   const current = newHistory[newHistory.length - 1];
   const squares = current.squares.slice();
 
+  // copy previous board
   squares.map((row, idx) => {
     squares[idx] = [...current.squares[idx]];
     return true;
   });
 
-  if (!squares[i][j] && !isWin) {
-    squares[i][j] = isX ? 'X' : 'O';
-    winCells = checkWinner(squares, i, j);
-    if (winCells !== null) {
-      isWin = true;
-    }
-    history = newHistory.concat([
-      {
-        squares,
-        coordinate: {
-          x: i,
-          y: j
-        }
-      }
-    ]);
-
-    step = newHistory.length;
-    isX = !isX;
+  squares[i][j] = isX ? 'X' : 'O';
+  winCells = checkWinner(squares, i, j);
+  if (winCells !== null) {
+    isWin = true;
   }
-
+  history = newHistory.concat([
+    {
+      squares,
+      coordinate: {
+        x: i,
+        y: j
+      }
+    }
+  ]);
   return {
     ...state,
     history,
-    step,
-    isX,
+    step: newHistory.length,
+    isX: !isX,
     isWin,
     winCells,
-    isYourTurn: !isYourTurn
+    isYourTurn: true
   };
 };
 
@@ -267,14 +253,7 @@ export const handleClick = (state, conn, i, j) => {
     step = newHistory.length;
     isX = !isX;
 
-    // send to enemy
-    conn.socket.emit(`${conn.room}`, {
-      event: 'COORDINATE',
-      data: {
-        x: i,
-        y: j
-      }
-    });
+    sendData(conn, { x: i, y: j });
     console.log(conn);
   }
 
@@ -285,7 +264,21 @@ export const handleClick = (state, conn, i, j) => {
     isX,
     isWin,
     winCells,
-    isYourTurn: !isYourTurn
+    isYourTurn: false
+  };
+};
+
+export const setTurn = (state, isYourTurn) => {
+  return {
+    ...state,
+    isYourTurn
+  };
+};
+
+export const setPaired = (state, isPaired) => {
+  return {
+    ...state,
+    isPaired
   };
 };
 

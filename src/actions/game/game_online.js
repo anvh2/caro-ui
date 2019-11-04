@@ -14,6 +14,16 @@ export const setCaro = (i, j) => ({
   j
 });
 
+export const setTurn = isTurn => ({
+  type: 'SET_TURN',
+  isTurn
+});
+
+export const setPaired = isPaired => ({
+  type: 'SET_PAIRED',
+  isPaired
+});
+
 export const reverse = () => ({
   type: 'REVERSE'
 });
