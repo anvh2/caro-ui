@@ -5,7 +5,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import App from './containers/App';
-import { gameOnlineReducer } from './reducers/game/online_game';
+import { gameOnlineReducer } from './reducers/game/game';
 // import { combined } from './reducers';
 
 const store = createStore(gameOnlineReducer, applyMiddleware(thunk));

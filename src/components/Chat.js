@@ -59,11 +59,6 @@ const Chat = data => {
               }
             }}
           />
-          <div className="input-group-append">
-            <span className="input-group-text">
-              <i className="fa fa-paper-plane" />
-            </span>
-          </div>
         </div>
       </div>
     </div>

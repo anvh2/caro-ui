@@ -15,24 +15,6 @@ const connectServer = () => {
     }
   });
 
-  // // pairing
-  // let room = '';
-  // socket.on('paired', data => {
-  //   console.log(data.room);
-  //   room = data.room;
-  //   localStorage.setItem('room', room);
-  // });
-
-  // detect message from server
-  // socket.on(`${room}`, message => {
-  //   console.log(message);
-  // });
-
-  // conn.socket = socket;
-  // conn.room = '';
-  // conn.status = 'waiting';
-  // console.log('connection', conn);
-
   return {
     socket,
     room: '',
@@ -64,6 +46,36 @@ export const sendData = (conn, data) => {
 
 export const sendMsg = (conn, data) => {
   conn.socket.emit(`${conn.room}`, { event: 'MESSAGE', data });
+};
+
+export const listeningUndoAction = (conn, callback) => {
+  conn.socket.on('UNDO', res => {
+    callback(res);
+  });
+};
+
+export const sendUndoAction = conn => {
+  conn.socket.emit(`${conn.room}`, { event: 'UNDO', msg: 'UNDO' });
+};
+
+export const listeningReconcileAction = (conn, callback) => {
+  conn.socket.on('RECONCILE', res => {
+    callback(res);
+  });
+};
+
+export const sendReconcileAction = conn => {
+  conn.socket.emit(`${conn.room}`, { event: 'RECONCILE', msg: 'RECONCILE' });
+};
+
+export const listeningSurrenderAction = (conn, callback) => {
+  conn.socket.on('SURRENDER', res => {
+    callback(res);
+  });
+};
+
+export const sendSurrenderAction = conn => {
+  conn.socket.emit(`${conn.room}`, { event: 'SURRENDER', msg: 'SURRENDER' });
 };
 
 export default connectServer;

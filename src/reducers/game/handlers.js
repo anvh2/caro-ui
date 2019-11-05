@@ -1,10 +1,11 @@
+/* eslint-disable no-constant-condition */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 /* eslint-disable no-continue */
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable no-undef */
 /* eslint-disable consistent-return */
-import { sendData } from '../../plugins/socket';
+import { sendData, sendUndoAction } from '../../plugins/socket';
 
 const checkWinner = (squares, i, j) => {
   const currentCell = squares[i][j];
@@ -254,7 +255,6 @@ export const handleClick = (state, conn, i, j) => {
     isX = !isX;
 
     sendData(conn, { x: i, y: j });
-    console.log(conn);
   }
 
   return {
@@ -291,4 +291,116 @@ export const setMessage = (state, message) => {
   };
 };
 
-export const undo = () => {};
+export const undo = conn => {
+  sendUndoAction(conn);
+};
+
+export const setKindGameOffline = state => {
+  return {
+    ...state,
+    isOffline: true
+  };
+};
+
+export const turnBot = state => {
+  let { history, step, isWin, isX, winCells } = state;
+  const { isTurn } = state;
+  if (isTurn || isWin) {
+    return state;
+  }
+
+  const newHistory = history.slice(0, step + 1);
+  const current = newHistory[newHistory.length - 1];
+  const squares = current.squares.slice();
+
+  squares.map((row, idx) => {
+    squares[idx] = [...current.squares[idx]];
+    return true;
+  });
+
+  while (true) {
+    const x = Math.floor(Math.random() * Math.floor(20));
+    const y = Math.floor(Math.random() * Math.floor(20));
+
+    if (!squares[x][y]) {
+      squares[x][y] = isX ? 'X' : 'O';
+      winCells = checkWinner(squares, x, y);
+      if (winCells !== null) {
+        isWin = true;
+      }
+      history = newHistory.concat([
+        {
+          squares,
+          coordinate: { x, y }
+        }
+      ]);
+
+      step = newHistory.length;
+      isX = !isX;
+
+      break;
+    }
+  }
+
+  return {
+    ...state,
+    history,
+    step,
+    isX,
+    isWin,
+    winCells,
+    isYourTurn: true
+  };
+};
+
+export const handleClickOffline = (state, i, j) => {
+  console.log('[handleClickOffline]');
+  let { history, step, isWin, isX, winCells } = state;
+  const { isYourTurn } = state;
+  if (!isYourTurn || isWin) {
+    return state;
+  }
+
+  if (!history[step].squares[i][j] && isWin) {
+    return;
+  }
+
+  const newHistory = history.slice(0, step + 1);
+  const current = newHistory[newHistory.length - 1];
+  const squares = current.squares.slice();
+
+  squares.map((row, idx) => {
+    squares[idx] = [...current.squares[idx]];
+    return true;
+  });
+
+  if (!squares[i][j]) {
+    squares[i][j] = isX ? 'X' : 'O';
+    winCells = checkWinner(squares, i, j);
+    if (winCells !== null) {
+      isWin = true;
+    }
+    history = newHistory.concat([
+      {
+        squares,
+        coordinate: {
+          x: i,
+          y: j
+        }
+      }
+    ]);
+
+    step = newHistory.length;
+    isX = !isX;
+  }
+
+  return {
+    ...state,
+    history,
+    step,
+    isX,
+    isWin,
+    winCells,
+    isYourTurn: false
+  };
+};

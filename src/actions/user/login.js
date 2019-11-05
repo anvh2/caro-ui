@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import cookie from 'react-cookies';
 
 export const LOGIN_REQUESTED = 'LOGIN_REQUESTED';

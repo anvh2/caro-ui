@@ -3,11 +3,11 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 // import cookie from 'react-cookies';
-import Game from './game/GameOffline';
+// import Game from './game/Game';
 import Login from './user/Login';
 import Register from '../components/user/Register';
 import Home from '../components/home';
-import Caro from './game/GameOnline';
+import Caro from './game/Game';
 
 class App extends Component {
   render() {
@@ -29,9 +29,6 @@ class App extends Component {
           </Route>
           <Route path="/register">
             <Register />
-          </Route>
-          <Route path="/game">
-            <Game />
           </Route>
           <Route path="/caro">
             <Caro />

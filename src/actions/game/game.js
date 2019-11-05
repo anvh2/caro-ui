@@ -29,6 +29,11 @@ export const setMessage = message => ({
   message
 });
 
+export const undo = conn => ({
+  type: 'UNDO',
+  conn
+});
+
 export const reverse = () => ({
   type: 'REVERSE'
 });
@@ -39,15 +44,24 @@ export const reset = () => {
   };
 };
 
-export const undo = step => ({
-  type: 'UNDO',
-  step
-});
-
 export const login = () => ({
   type: 'LOGIN'
 });
 
 export const logout = () => ({
   type: 'LOGOUT'
+});
+
+export const setKindGameOffline = () => ({
+  type: 'KIND_GAME_OFFLINE'
+});
+
+export const handleClickOffline = (i, j) => ({
+  type: 'HANDLE_CLICK_OFFLINE',
+  i,
+  j
+});
+
+export const turnBot = () => ({
+  type: 'TURN_BOT'
 });

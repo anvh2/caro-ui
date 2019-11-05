@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import * as handlers from './online_handlers';
+import * as handlers from './handlers';
 
 export const initGameOnlineState = {
   // game state
@@ -17,14 +17,14 @@ export const initGameOnlineState = {
   isX: true,
   isYourTurn: true,
   isPaired: false,
+  isOffline: false,
 
-  // chat state
-  messages: [
-    // {
-    //   type: '',
-    //   msg: ''
-    // }
-  ]
+  // chat state, 1 message has struct
+  // {
+  //   type: '',
+  //   msg: ''
+  // }
+  messages: []
 };
 
 export const gameOnlineReducer = (state = initGameOnlineState, action) => {
@@ -40,7 +40,13 @@ export const gameOnlineReducer = (state = initGameOnlineState, action) => {
     case 'SET_MESSAGE':
       return handlers.setMessage(state, action.message);
     case 'UNDO':
-      return handlers.undo(state, action.step);
+      return handlers.undo(state, action.conn);
+    case 'HANDLE_CLICK_OFFLINE':
+      return handlers.handleClickOffline(state, action.i, action.j);
+    case 'TURN_BOT':
+      return handlers.turnBot(state);
+    case 'KIND_GAME_OFFLINE':
+      return handlers.setKindGameOffline(state);
     default:
       return state;
   }
