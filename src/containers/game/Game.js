@@ -79,10 +79,10 @@ class Game extends Component {
       setPaired,
       setMessage,
       messages,
-      undo,
       handleClickOffline,
       turnBot,
       setKindGameOffline,
+      undoTo,
       isOffline
     } = this.props;
     const current = history[step];
@@ -92,7 +92,11 @@ class Game extends Component {
         return true;
       }
       const desc = `Go to move #${move} (${currentStep.coordinate.x}, ${currentStep.coordinate.y})`;
-      return <ListGroup.Item key={`key_${move}`}>{desc}</ListGroup.Item>;
+      return (
+        <ListGroup.Item key={`key_${move}`} onClick={() => undoTo(move)}>
+          {desc}
+        </ListGroup.Item>
+      );
     });
 
     // this support for game online
@@ -141,11 +145,24 @@ class Game extends Component {
       <Container bsPrefix="containerx">
         <Row bsPrefix="game">
           <Col sm={8}>
-            {isPaired || isOffline ? (
+            {isOffline ? (
               <div className="game-board">
                 <Board
                   board={current.squares}
                   onClick={(i, j) => handleClickOffline(i, j)}
+                  isWin={isWin}
+                  winCells={winCells}
+                  isX={isX}
+                />
+              </div>
+            ) : (
+              <div />
+            )}
+            {isPaired ? (
+              <div className="game-board">
+                <Board
+                  board={current.squares}
+                  onClick={(i, j) => handleClick(conn, i, j)}
                   isWin={isWin}
                   winCells={winCells}
                   isX={isX}
@@ -232,6 +249,7 @@ class Game extends Component {
                       <Button
                         variant="outline-secondary"
                         onClick={() => {
+                          // TODO: it still ok if user click online and offline game type
                           setKindGameOffline();
                         }}
                       >
@@ -292,10 +310,10 @@ const mapDispathToProps = dispatch => {
     setTurn: isTurn => dispatch(action.setTurn(isTurn)),
     setPaired: isPaired => dispatch(action.setPaired(isPaired)),
     setMessage: message => dispatch(action.setMessage(message)),
-    undo: conn => dispatch(action.undo(conn)),
     handleClickOffline: (i, j) => dispatch(action.handleClickOffline(j, i)),
     turnBot: () => dispatch(action.turnBot()),
     setKindGameOffline: () => dispatch(action.setKindGameOffline()),
+    undoTo: step => dispatch(action.undoTo(step)),
     reset: () => dispatch(action.reset()),
     reverse: () => dispatch(action.reverse())
   };

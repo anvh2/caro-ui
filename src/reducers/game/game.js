@@ -39,14 +39,14 @@ export const gameOnlineReducer = (state = initGameOnlineState, action) => {
       return handlers.setPaired(state, action.isPaired);
     case 'SET_MESSAGE':
       return handlers.setMessage(state, action.message);
-    case 'UNDO':
-      return handlers.undo(state, action.conn);
     case 'HANDLE_CLICK_OFFLINE':
       return handlers.handleClickOffline(state, action.i, action.j);
     case 'TURN_BOT':
       return handlers.turnBot(state);
     case 'KIND_GAME_OFFLINE':
       return handlers.setKindGameOffline(state);
+    case 'UNDO_TO':
+      return handlers.undoTo(state, action.step);
     default:
       return state;
   }

@@ -29,11 +29,6 @@ export const setMessage = message => ({
   message
 });
 
-export const undo = conn => ({
-  type: 'UNDO',
-  conn
-});
-
 export const reverse = () => ({
   type: 'REVERSE'
 });
@@ -64,4 +59,9 @@ export const handleClickOffline = (i, j) => ({
 
 export const turnBot = () => ({
   type: 'TURN_BOT'
+});
+
+export const undoTo = step => ({
+  type: 'UNDO_TO',
+  step
 });

@@ -5,7 +5,7 @@
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable no-undef */
 /* eslint-disable consistent-return */
-import { sendData, sendUndoAction } from '../../plugins/socket';
+import { sendData } from '../../plugins/socket';
 
 const checkWinner = (squares, i, j) => {
   const currentCell = squares[i][j];
@@ -291,10 +291,6 @@ export const setMessage = (state, message) => {
   };
 };
 
-export const undo = conn => {
-  sendUndoAction(conn);
-};
-
 export const setKindGameOffline = state => {
   return {
     ...state,
@@ -402,5 +398,18 @@ export const handleClickOffline = (state, i, j) => {
     isWin,
     winCells,
     isYourTurn: false
+  };
+};
+
+export const undoTo = (state, stepNumber) => {
+  const { isWin } = state;
+  if (isWin) {
+    return;
+  }
+
+  return {
+    ...state,
+    step: stepNumber,
+    isX: stepNumber % 2 === 0
   };
 };
