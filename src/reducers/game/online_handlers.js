@@ -282,4 +282,13 @@ export const setPaired = (state, isPaired) => {
   };
 };
 
+export const setMessage = (state, message) => {
+  let { messages } = state;
+  messages = messages.concat(message);
+  return {
+    ...state,
+    messages
+  };
+};
+
 export const undo = () => {};

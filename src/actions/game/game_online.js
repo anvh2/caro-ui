@@ -24,6 +24,11 @@ export const setPaired = isPaired => ({
   isPaired
 });
 
+export const setMessage = message => ({
+  type: 'SET_MESSAGE',
+  message
+});
+
 export const reverse = () => ({
   type: 'REVERSE'
 });

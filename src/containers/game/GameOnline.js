@@ -22,7 +22,7 @@ let conn;
 let isListening = false;
 
 class GameOnline extends Component {
-  findMatch = (setTurn, setPaired) => {
+  findMatch = (setTurn, setPaired, setMessage) => {
     conn = connectServer();
     // pairing
     pairing(conn, data => {
@@ -35,6 +35,9 @@ class GameOnline extends Component {
     });
     // TODO: this will set without pair
     setPaired(true);
+
+    // set message to chat box
+    setMessage({ type: 'send', msg: 'Đang tìm trận...' });
   };
 
   render() {
@@ -50,7 +53,9 @@ class GameOnline extends Component {
       handleClick,
       setCaro,
       setTurn,
-      setPaired
+      setPaired,
+      setMessage,
+      messages
     } = this.props;
     const current = history[step];
 
@@ -65,8 +70,6 @@ class GameOnline extends Component {
     if (isReverse) {
       moves = moves.reverse();
     }
-
-    console.log(isYourTurn, isPaired);
 
     // after click, this will re-render and will listen
     // ensure listening is singleton
@@ -83,7 +86,10 @@ class GameOnline extends Component {
 
       // listening incoming message
       listeningMsg(conn, msg => {
-        console.log(msg);
+        // parse json to object
+        const msgObj = JSON.parse(msg);
+        console.log(msgObj);
+        setMessage(msgObj);
       });
     }
 
@@ -118,7 +124,7 @@ class GameOnline extends Component {
                     variant="primary"
                     type="button"
                     onClick={() => {
-                      this.findMatch(setTurn, setPaired);
+                      this.findMatch(setTurn, setPaired, setMessage);
                     }}
                   >
                     Find
@@ -134,7 +140,11 @@ class GameOnline extends Component {
               <Row>
                 <Col sm={12}>
                   <div>
-                    <Chat />
+                    <Chat
+                      messages={messages}
+                      setMessage={setMessage}
+                      conn={conn}
+                    />
                   </div>
                 </Col>
               </Row>
@@ -163,7 +173,8 @@ const mapStateToProps = state => {
     isReverse: state.isReverse,
     isAuthen: state.isAuthen,
     isYourTurn: state.isYourTurn,
-    isPaired: state.isPaired
+    isPaired: state.isPaired,
+    messages: state.messages
   };
 };
 
@@ -173,6 +184,7 @@ const mapDispathToProps = dispatch => {
     setCaro: (i, j) => dispatch(action.setCaro(i, j)),
     setTurn: isTurn => dispatch(action.setTurn(isTurn)),
     setPaired: isPaired => dispatch(action.setPaired(isPaired)),
+    setMessage: message => dispatch(action.setMessage(message)),
     reset: () => dispatch(action.reset()),
     reverse: () => dispatch(action.reverse()),
     undo: step => dispatch(action.undo(step))

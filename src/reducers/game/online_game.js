@@ -2,6 +2,7 @@
 import * as handlers from './online_handlers';
 
 export const initGameOnlineState = {
+  // game state
   history: [
     {
       squares: Array(20)
@@ -15,7 +16,15 @@ export const initGameOnlineState = {
   winCells: null,
   isX: true,
   isYourTurn: true,
-  isPaired: false
+  isPaired: false,
+
+  // chat state
+  messages: [
+    // {
+    //   type: '',
+    //   msg: ''
+    // }
+  ]
 };
 
 export const gameOnlineReducer = (state = initGameOnlineState, action) => {
@@ -28,6 +37,8 @@ export const gameOnlineReducer = (state = initGameOnlineState, action) => {
       return handlers.setTurn(state, action.isTurn);
     case 'SET_PAIRED':
       return handlers.setPaired(state, action.isPaired);
+    case 'SET_MESSAGE':
+      return handlers.setMessage(state, action.message);
     case 'UNDO':
       return handlers.undo(state, action.step);
     default:
