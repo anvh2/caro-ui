@@ -81,6 +81,7 @@ export const updateProfile = (userData, callback) => {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
+      id: userData.id,
       username: userData.username,
       password: userData.password,
       display_name: userData.disName

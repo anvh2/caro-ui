@@ -29,16 +29,6 @@ export const setMessage = message => ({
   message
 });
 
-export const reverse = () => ({
-  type: 'REVERSE'
-});
-
-export const reset = () => {
-  return {
-    type: 'RESET'
-  };
-};
-
 export const login = () => ({
   type: 'LOGIN'
 });
@@ -65,3 +55,13 @@ export const undoTo = step => ({
   type: 'UNDO_TO',
   step
 });
+
+export const reverse = () => ({
+  type: 'REVERSE'
+});
+
+export const reset = () => {
+  return {
+    type: 'RESET'
+  };
+};

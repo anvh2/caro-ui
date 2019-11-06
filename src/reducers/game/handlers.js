@@ -350,7 +350,7 @@ export const turnBot = state => {
 };
 
 export const handleClickOffline = (state, i, j) => {
-  console.log('[handleClickOffline]');
+  console.log(i, j);
   let { history, step, isWin, isX, winCells } = state;
   const { isYourTurn } = state;
   if (!isYourTurn || isWin) {
@@ -411,5 +411,46 @@ export const undoTo = (state, stepNumber) => {
     ...state,
     step: stepNumber,
     isX: stepNumber % 2 === 0
+  };
+};
+
+export const login = state => {
+  return {
+    ...state,
+    isAuthen: true
+  };
+};
+
+export const logout = state => {
+  return {
+    ...state,
+    isAuthen: false
+  };
+};
+
+export const reset = state => {
+  return {
+    ...state,
+    history: [
+      {
+        squares: Array(20)
+          .fill(null)
+          .map(() => Array(20).fill(null)),
+        coordinate: null
+      }
+    ],
+    step: 0,
+    isWin: false,
+    winCells: null,
+    isX: true,
+    isYourTurn: true,
+    isReverse: false
+  };
+};
+
+export const reverse = state => {
+  return {
+    ...state,
+    isReverse: !state.isReverse
   };
 };

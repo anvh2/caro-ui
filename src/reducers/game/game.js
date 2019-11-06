@@ -18,6 +18,8 @@ export const initGameOnlineState = {
   isYourTurn: true,
   isPaired: false,
   isOffline: false,
+  isAuthen: false,
+  isReverse: false,
 
   // chat state, 1 message has struct
   // {
@@ -47,6 +49,14 @@ export const gameOnlineReducer = (state = initGameOnlineState, action) => {
       return handlers.setKindGameOffline(state);
     case 'UNDO_TO':
       return handlers.undoTo(state, action.step);
+    case 'LOGIN':
+      return handlers.login(state);
+    case 'LOGOUT':
+      return handlers.logout(state);
+    case 'RESET':
+      return handlers.reset(state);
+    case 'REVERSE':
+      return handlers.reverse(state);
     default:
       return state;
   }

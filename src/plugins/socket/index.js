@@ -55,7 +55,10 @@ export const listeningUndoAction = (conn, callback) => {
 };
 
 export const sendUndoAction = conn => {
-  conn.socket.emit(`${conn.room}`, { event: 'UNDO', msg: 'UNDO' });
+  conn.socket.emit(`${conn.room}`, {
+    event: 'UNDO',
+    msg: 'PLEASE UNDO'
+  });
 };
 
 export const listeningReconcileAction = (conn, callback) => {
@@ -65,7 +68,10 @@ export const listeningReconcileAction = (conn, callback) => {
 };
 
 export const sendReconcileAction = conn => {
-  conn.socket.emit(`${conn.room}`, { event: 'RECONCILE', msg: 'RECONCILE' });
+  conn.socket.emit(`${conn.room}`, {
+    event: 'RECONCILE',
+    msg: 'PLEASE RECONCILE'
+  });
 };
 
 export const listeningSurrenderAction = (conn, callback) => {
@@ -75,7 +81,10 @@ export const listeningSurrenderAction = (conn, callback) => {
 };
 
 export const sendSurrenderAction = conn => {
-  conn.socket.emit(`${conn.room}`, { event: 'SURRENDER', msg: 'SURRENDER' });
+  conn.socket.emit(`${conn.room}`, {
+    event: 'SURRENDER',
+    msg: 'PLEASE SURRENDER'
+  });
 };
 
 export default connectServer;

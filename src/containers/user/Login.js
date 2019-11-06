@@ -1,8 +1,11 @@
+/* eslint-disable no-console */
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import cookie from 'react-cookies';
 import { connect } from 'react-redux';
 import { Form, Button } from 'react-bootstrap';
-import * as action from '../../actions/user/login';
+import * as action from '../../actions/user';
+import Game from '../game/Game';
+import { login } from '../../plugins/rest-api';
 
 let username = '';
 let password = '';
@@ -26,22 +29,40 @@ class Login extends Component {
     }
   };
 
-  onSubmit = login => e => {
+  onSubmit = loginState => e => {
     e.preventDefault();
-    login(username, password);
+    login(
+      {
+        username,
+        password
+      },
+      data => {
+        console.log('data in login', data);
+        if (data.code === 1) {
+          cookie.save('token', data.token);
+          loginState();
+        }
+      }
+    );
   };
 
   render() {
-    const { status, login } = this.props;
-    if (status === 'waiting') {
-      return <div>waiting</div>;
+    const { isAuthen } = this.props;
+    const { loginState } = this.props;
+    const auth = cookie.load('token');
+    if (auth !== undefined) {
+      loginState();
     }
-    if (status === 'succeeded') {
-      return <Redirect to="/" />;
+
+    console.log('isAuthen', isAuthen);
+
+    if (isAuthen) {
+      return <Game />;
     }
+
     return (
       <div>
-        <Form id="login" method="POST" onSubmit={this.onSubmit(login)}>
+        <Form id="login" method="POST" onSubmit={this.onSubmit(loginState)}>
           <Form.Group>
             <Form.Label>Username</Form.Label>
             <Form.Control
@@ -68,7 +89,6 @@ class Login extends Component {
             type="button"
             onClick={() => {
               // TODO: redirect to register page
-              this.props.history.push('/register');
             }}
           >
             Register
@@ -81,14 +101,13 @@ class Login extends Component {
 
 const mapStateToProps = state => {
   return {
-    status: state.status,
-    data: state.data
+    isAuthen: state.isAuthen
   };
 };
 
 const mapDispathToProps = dispatch => {
   return {
-    login: (username, password) => dispatch(action.login(username, password))
+    loginState: () => dispatch(action.login())
   };
 };
 

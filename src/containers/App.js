@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-// import cookie from 'react-cookies';
+import cookie from 'react-cookies';
 // import Game from './game/Game';
 import Login from './user/Login';
 import Register from '../components/user/Register';
@@ -11,16 +11,16 @@ import Caro from './game/Game';
 
 class App extends Component {
   render() {
-    // let { isAuthen } = this.props;
-    // const auth = cookie.load('token');
-    // if (auth !== undefined) {
-    //   isAuthen = true;
-    // } else {
-    //   isAuthen = false;
-    // }
-    // if (!isAuthen) {
-    //   return <Login />;
-    // }
+    let { isAuthen } = this.props;
+    const auth = cookie.load('token');
+    if (auth !== undefined) {
+      isAuthen = true;
+    } else {
+      isAuthen = false;
+    }
+    if (!isAuthen) {
+      return <Login />;
+    }
     return (
       <Router>
         <Switch>
@@ -44,8 +44,7 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    state
-    // isAuthen: state.isAuthen
+    isAuthen: state.isAuthen
   };
 };
 

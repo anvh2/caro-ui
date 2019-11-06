@@ -19,6 +19,7 @@ import {
   Dropdown
 } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import cookie from 'react-cookies';
 import Board from '../../components/board/Board';
 import {
   ChooseGameBtnGroup,
@@ -67,7 +68,6 @@ class Game extends Component {
     const {
       history,
       step,
-      isReverse,
       isWin,
       winCells,
       isX,
@@ -83,7 +83,11 @@ class Game extends Component {
       turnBot,
       setKindGameOffline,
       undoTo,
-      isOffline
+      isOffline,
+      logout,
+      isAuthen,
+      reset,
+      reverse
     } = this.props;
     const current = history[step];
 
@@ -123,17 +127,18 @@ class Game extends Component {
 
       // listening undo action of enemy
       listeningUndoAction(conn, data => {
-        console.log(data);
+        console.log('undo listen');
+        console.log('undo action', data);
       });
 
       // listening surrender action of enemy
       listeningSurrenderAction(conn, data => {
-        console.log(data);
+        console.log('surrender action', data);
       });
 
       // listening reconcile action of enemy
       listeningReconcileAction(conn, data => {
-        console.log(data);
+        console.log('reconcile action', data);
       });
     }
 
@@ -198,7 +203,15 @@ class Game extends Component {
                     <Dropdown.Item eventKey="1">Profile</Dropdown.Item>
                     <Dropdown.Item eventKey="2">Settings</Dropdown.Item>
                     <Dropdown.Divider />
-                    <Dropdown.Item eventKey="3">Logout</Dropdown.Item>
+                    <Dropdown.Item
+                      eventKey="3"
+                      onClick={() => {
+                        logout();
+                        cookie.remove('token');
+                      }}
+                    >
+                      Logout
+                    </Dropdown.Item>
                   </DropdownButton>
                 </Col>
               </Row>
@@ -236,6 +249,35 @@ class Game extends Component {
                       </Button>
                     </ButtonGroup>
                   ) : (
+                    <div />
+                  )}
+                  {isOffline ? (
+                    <ButtonGroup aria-label="Basic Button Group">
+                      <Button
+                        variant="outline-secondary"
+                        type="button"
+                        onClick={() => {
+                          console.log('reset');
+                          reset();
+                        }}
+                      >
+                        Reset
+                      </Button>
+                      <Button
+                        variant="outline-secondary"
+                        onClick={() => {
+                          console.log('Reverse');
+                          moves.reverse();
+                          reverse();
+                        }}
+                      >
+                        Reverse
+                      </Button>
+                    </ButtonGroup>
+                  ) : (
+                    <div />
+                  )}
+                  {!isPaired && !isOffline ? (
                     <ButtonGroup aria-label="Basic Button Group">
                       <Button
                         variant="outline-secondary"
@@ -256,6 +298,8 @@ class Game extends Component {
                         Offline
                       </Button>
                     </ButtonGroup>
+                  ) : (
+                    <div />
                   )}
                 </div>
               </Row>
@@ -294,7 +338,6 @@ const mapStateToProps = state => {
     isX: state.isX,
     isWin: state.isWin,
     winCells: state.winCells,
-    isReverse: state.isReverse,
     isAuthen: state.isAuthen,
     isYourTurn: state.isYourTurn,
     isPaired: state.isPaired,
@@ -310,12 +353,13 @@ const mapDispathToProps = dispatch => {
     setTurn: isTurn => dispatch(action.setTurn(isTurn)),
     setPaired: isPaired => dispatch(action.setPaired(isPaired)),
     setMessage: message => dispatch(action.setMessage(message)),
-    handleClickOffline: (i, j) => dispatch(action.handleClickOffline(j, i)),
+    handleClickOffline: (i, j) => dispatch(action.handleClickOffline(i, j)),
     turnBot: () => dispatch(action.turnBot()),
     setKindGameOffline: () => dispatch(action.setKindGameOffline()),
     undoTo: step => dispatch(action.undoTo(step)),
     reset: () => dispatch(action.reset()),
-    reverse: () => dispatch(action.reverse())
+    reverse: () => dispatch(action.reverse()),
+    logout: () => dispatch(action.logout())
   };
 };
 
