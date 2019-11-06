@@ -44,7 +44,7 @@ class Register extends Component {
       return;
     }
 
-    fetch('http://localhost:55210/user/register', {
+    fetch('http://becarovn.herokuapp.com/user/register', {
       method: 'POST',
       headers: {
         Accept: 'application/json',

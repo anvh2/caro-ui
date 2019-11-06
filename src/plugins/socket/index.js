@@ -6,7 +6,7 @@ import io from 'socket.io-client';
 let socket = null;
 
 const connectServer = () => {
-  socket = io.connect('http://localhost:55210');
+  socket = io.connect('http://becarovn.herokuapp.com/');
   socket.emit('MATCHING', { username: 'anvh2' }, res => {
     if (res.code === 1) {
       console.log('res ok');
