@@ -1,3 +1,5 @@
+/* eslint-disable import/no-cycle */
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-console */
 import React, { Component } from 'react';
 import cookie from 'react-cookies';
@@ -6,12 +8,17 @@ import { Form, Button } from 'react-bootstrap';
 import * as action from '../../actions/user';
 import Game from '../game/Game';
 import { login } from '../../plugins/rest-api';
+import Register from '../../components/user/Register';
 
 let username = '';
 let password = '';
 class Login extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      isRedirect: false
+    };
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -54,10 +61,12 @@ class Login extends Component {
       loginState();
     }
 
-    console.log('isAuthen', isAuthen);
-
     if (isAuthen) {
       return <Game />;
+    }
+
+    if (this.state.isRedirect) {
+      return <Register />;
     }
 
     return (
@@ -88,7 +97,9 @@ class Login extends Component {
             variant="primary"
             type="button"
             onClick={() => {
-              // TODO: redirect to register page
+              this.setState({
+                isRedirect: true
+              });
             }}
           >
             Register

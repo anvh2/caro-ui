@@ -5,7 +5,7 @@
 import cookie from 'react-cookies';
 
 export const login = (userData, callback) => {
-  fetch('http://becarovn.herokuapp.com/user/login', {
+  fetch('http://localhost:55210/user/login', {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -24,7 +24,7 @@ export const login = (userData, callback) => {
 };
 
 export const register = (userData, callback) => {
-  fetch('http://becarovn.herokuapp.com/user/register', {
+  fetch('http://localhost:55210/user/register', {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -49,7 +49,7 @@ export const fetchProfile = callback => {
     return false;
   }
 
-  fetch('http://becarovn.herokuapp.com/me', {
+  fetch('http://localhost:55210/me', {
     method: 'GET',
     headers: {
       Accept: 'application/json',
@@ -74,7 +74,7 @@ export const updateProfile = (userData, callback) => {
   //     return false;
   //   }
 
-  fetch('http://becarovn.herokuapp.com/user/update', {
+  fetch('http://localhost:55210/user/update', {
     method: 'POST',
     headers: {
       Accept: 'application/json',

@@ -3,11 +3,12 @@
 /* eslint-disable object-shorthand */
 /* eslint-disable no-undef */
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
+import Login from '../../containers/user/Login';
+import { register } from '../../plugins/rest-api';
 
 let username = '';
-let name = '';
+let disName = '';
 let password = '';
 let confirm = '';
 
@@ -25,7 +26,7 @@ class Register extends Component {
         username = e.target.value;
         break;
       case 'name':
-        name = e.target.value;
+        disName = e.target.value;
         break;
       case 'password':
         password = e.target.value;
@@ -40,43 +41,19 @@ class Register extends Component {
   submit = e => {
     e.preventDefault();
 
-    if (password !== confirm) {
-      return;
-    }
-
-    fetch('http://becarovn.herokuapp.com/user/register', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        username: username,
-        password: password,
-        display_name: name
-      })
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.code === 1) {
-          this.setState({
-            isSuccess: true
-          });
-          console.log('Success');
-        } else {
-          console.log('Fail');
-        }
-      })
-      .catch(err => {
-        console.log('some thing wrong');
-        // log err to file
+    if (password === confirm) {
+      register({ username, password, disName }, data => {
+        this.setState({
+          isSuccess: true
+        });
       });
+    }
   };
 
   render() {
     const { isSuccess } = this.state;
     if (isSuccess) {
-      return <Redirect to="/login" />;
+      return <Login />;
     }
     return (
       <Form id="register" method="POST" onSubmit={this.submit}>

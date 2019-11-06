@@ -18,8 +18,8 @@ class App extends Component {
     } else {
       isAuthen = false;
     }
-    if (!isAuthen) {
-      return <Login />;
+    if (isAuthen) {
+      return <Caro />;
     }
     return (
       <Router>
